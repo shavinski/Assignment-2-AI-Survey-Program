@@ -1,74 +1,77 @@
-import java.lang.reflect.Array;
 import java.util.Scanner;
 
 public class main {
-        public static void main(String[] args) {
+        private static int republican = 0;
+        private static int democrat = 0;
+        private static int libertarian = 0;
+        private static int centrist = 0;
 
+        public static void main(String[] args) {
                 Scanner scanner = new Scanner(System.in);
 
                 String[][] questionAnswers = {
 
-                                { "What is your stance on gun-control?",
+                                { "1. What is your stance on gun-control?",
                                                 "A: I love the second amendment and want no restrictions.",
                                                 "B: We need no guns and only police and military should have them.",
                                                 "C: I want complete gun rights with minimal restrictions.",
                                                 "D: We need a balanced approach that can address public safety while respecting the second amendment." },
 
-                                { "How should the government approach healthcare reform?",
+                                { "2. How should the government approach healthcare reform?",
                                                 "A: Support market-based solutions and oppose government intervention in healthcare.",
                                                 "B: Advocate for universal healthcare coverage and government-funded healthcare programs.",
                                                 "C: Promote healthcare deregulation and individual choice in healthcare services.",
                                                 "D: Seek bipartisan solutions to improve access to affordable healthcare without excessive government control." },
 
-                                { "What is your opinion on taxation and fiscal policy?",
+                                { "3. What is your opinion on taxation and fiscal policy?",
                                                 "A: Advocate for lower taxes, limited government spending, and fiscal responsibility.",
                                                 "B: Support progressive taxation and increased government spending on social programs.",
                                                 "C: Favor minimal taxation and limited government involvement in the economy.",
                                                 "D: Advocate for a fair tax system and responsible fiscal management to address economic inequality and promote growth." },
 
-                                { "How should the government address climate change?",
+                                { "4. How should the government address climate change?",
                                                 "A: Oppose strict environmental regulations and prioritize economic growth over environmental concerns.",
                                                 "B: Support aggressive measures to combat climate change, including carbon emissions reduction targets.",
                                                 "C: Favor market-based solutions and technological innovation to address environmental challenges.",
                                                 "D: Advocate for pragmatic policies that balance environmental protection with economic interests." },
 
-                                { "What is your stance on immigration policy?",
+                                { "5. What is your stance on immigration policy?",
                                                 "A: Support strict immigration controls, border security, and enforcement of immigration laws.",
                                                 "B: Advocate for comprehensive immigration reform, including a path to citizenship for undocumented immigrants.",
                                                 "C: Promote open borders and free movement of people, with minimal restrictions on immigration.",
                                                 "D: Seek a balanced approach to immigration policy that addresses border security concerns while providing opportunities for legal immigration and protecting immigrant rights." },
 
-                                { "How should the government address income inequality?",
+                                { "6. How should the government address income inequality?",
                                                 "A: Support free-market capitalism and oppose government intervention to redistribute wealth.",
                                                 "B: Advocate for progressive taxation, social welfare programs, and income redistribution to reduce inequality.",
                                                 "C: Favor deregulation and economic freedom to promote upward mobility and entrepreneurship.",
                                                 "D: Seek policies that promote economic opportunity and fairness, addressing inequality without stifling economic growth." },
 
-                                { "What is your opinion on foreign policy and military intervention?",
+                                { "7. What is your opinion on foreign policy and military intervention?",
                                                 "A: Support a strong national defense and assertive foreign policy to protect American interests.",
                                                 "B: Advocate for diplomacy and multilateral cooperation to address global challenges and reduce military intervention.",
                                                 "C: Favor non-interventionism and oppose military intervention in foreign conflicts.",
                                                 "D: Seek a pragmatic approach to foreign policy that balances national security interests with diplomatic engagement and humanitarian concerns." },
 
-                                { "How should the government address education reform?",
+                                { "8. How should the government address education reform?",
                                                 "A: Support school choice initiatives, charter schools, and voucher programs to increase educational options and competition.",
                                                 "B: Advocate for increased funding for public education, teacher pay raises, and universal pre-K programs.",
                                                 "C: Favor privatization and decentralization of education, with minimal government involvement in curriculum and standards.",
                                                 "D: Seek bipartisan solutions to improve educational outcomes, increase access to quality education, and address disparities in education." },
 
-                                { "What is your stance on LGBTQ rights?",
+                                { "9. What is your stance on LGBTQ rights?",
                                                 "A: Oppose LGBTQ rights and support traditional family values and religious freedom.",
                                                 "B: Advocate for LGBTQ rights and equality under the law.",
                                                 "C: Favor individual freedom and limited government interference in personal matters, including LGBTQ rights.",
                                                 "D: Seek policies that respect individual autonomy and uphold civil liberties, while respecting diverse beliefs and values." },
 
-                                { "What is your stance on reproductive rights?",
+                                { "10. What is your stance on reproductive rights?",
                                                 "A: Oppose abortion rights and support restrictions on reproductive choices.",
                                                 "B: Advocate for reproductive rights and access to abortion services.",
                                                 "C: Favor individual autonomy and limited government interference in reproductive matters.",
                                                 "D: Seek policies that respect reproductive choices and support comprehensive reproductive healthcare." },
 
-                                { "What political party do you align yourself with?",
+                                { "11. What political party do you align yourself with?",
                                                 "A: Republican",
                                                 "B: Democrat",
                                                 "C: Libertarian",
@@ -77,9 +80,10 @@ public class main {
 
                 int currentQuestion = 0;
 
-                while (currentQuestion <= questionAnswers.length) {
+                // Prints out question with multiple choice answers
+                while (currentQuestion <= questionAnswers.length - 1) {
                         System.out.println("----------------------------------");
-                        System.out.println((currentQuestion + 1) + ". " + questionAnswers[currentQuestion][0]);
+                        System.out.println(questionAnswers[currentQuestion][0]);
                         for (int i = 1; i < questionAnswers[currentQuestion].length; i++) {
                                 System.out.println(questionAnswers[currentQuestion][i]);
                         }
@@ -87,16 +91,37 @@ public class main {
                         String userInput = scanner.nextLine();
                         String userInputUpper = userInput.toUpperCase();
 
-                        if (userInputUpper.equals("A") ||
-                                        userInputUpper.equals("B") ||
-                                        userInputUpper.equals("C") ||
-                                        userInputUpper.equals("D")) {
+                        // Validate user input first and if ok score political points
+                        if (userInputUpper.equals("A")
+                                        || userInputUpper.equals("B")
+                                        || userInputUpper.equals("C")
+                                        || userInputUpper.equals("D")) {
                                 System.out.println("");
+                                addPointsToPoliticalParty(userInputUpper);
                                 currentQuestion += 1;
                         } else {
                                 System.out.println("Please enter a valid answer, either A, B, C or D.");
                                 System.out.println("");
                         }
+
+                }
+
+                System.out.println("done");
+                System.out.println("Republican " + republican);
+                System.out.println("Democrat " + democrat);
+                System.out.println("Libertarian " + libertarian);
+                System.out.println("Centrist " + centrist);
+        }
+
+        public static void addPointsToPoliticalParty(String input) {
+                if (input.equals("A")) {
+                        republican += 1;
+                } else if (input.equals("B")) {
+                        democrat += 1;
+                } else if (input.equals("C")) {
+                        libertarian += 1;
+                } else if (input.equals("D")) {
+                        centrist += 1;
                 }
         }
 }
