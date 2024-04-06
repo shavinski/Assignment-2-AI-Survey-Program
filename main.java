@@ -10,13 +10,13 @@ import java.io.IOException;
 public class main {
         private static HashMap<String, Double> partyProbabilities = new HashMap<>();
         private static ArrayList<String> userAnswers = new ArrayList<>();
-        private static Double THRESHOLD = 0.70;
+        private static Double THRESHOLD = 0.50;
         private static String mostLikelyParty = "republican";
         private static DecimalFormat df = new DecimalFormat("#.##");
 
         public static void main(String[] args) {
-                // Populate the hashmap with probabilities, start with a quarter chance of all
-                // parties
+                // Populate the hashmap with probabilities, start with a 25% of being either
+                // party
                 partyProbabilities.put("republican", 0.25);
                 partyProbabilities.put("democrat", 0.25);
                 partyProbabilities.put("libertarian", 0.25);
@@ -140,35 +140,55 @@ public class main {
         }
 
         public static void changePartyProbability(String input) {
-                // Depending on input it will add one to value depending on key
+                // Depending on input it will change probability of party
+                // Subtracts other probabilities to make sure we do not pass 1.0
                 if (input.equals("A")) {
-                        partyProbabilities.put("republican", partyProbabilities.get("republican") + .0685);
+                        partyProbabilities.put("republican", partyProbabilities.get("republican") + .0682);
+                        partyProbabilities.put("democrat", partyProbabilities.get("democrat") - .0227);
+                        partyProbabilities.put("libertarian", partyProbabilities.get("libertarian") - .0227);
+                        partyProbabilities.put("centrist", partyProbabilities.get("centrist") - .0227);
                 } else if (input.equals("B")) {
-                        partyProbabilities.put("democrat", partyProbabilities.get("democrat") + .0685);
+                        partyProbabilities.put("republican", partyProbabilities.get("republican") - .0227);
+                        partyProbabilities.put("democrat", partyProbabilities.get("democrat") + .0682);
+                        partyProbabilities.put("libertarian", partyProbabilities.get("libertarian") - .0227);
+                        partyProbabilities.put("centrist", partyProbabilities.get("centrist") - .0227);
                 } else if (input.equals("C")) {
-                        partyProbabilities.put("libertarian", partyProbabilities.get("libertarian") + .0685);
+                        partyProbabilities.put("republican", partyProbabilities.get("libertarian") - .0227);
+                        partyProbabilities.put("democrat", partyProbabilities.get("democrat") - .0227);
+                        partyProbabilities.put("libertarian", partyProbabilities.get("libertarian") + .0682);
+                        partyProbabilities.put("centrist", partyProbabilities.get("centrist") - .0227);
                 } else if (input.equals("D")) {
-                        partyProbabilities.put("centrist", partyProbabilities.get("centrist") + .0685);
+                        partyProbabilities.put("republican", partyProbabilities.get("republican") - .0227);
+                        partyProbabilities.put("democrat", partyProbabilities.get("democrat") - .0227);
+                        partyProbabilities.put("libertarian", partyProbabilities.get("libertarian") - .0227);
+                        partyProbabilities.put("centrist", partyProbabilities.get("centrist") + .0682);
                 }
         }
 
-        public static String calculateParty(HashMap<String, Double> counts) {
-                double mostVotes = Double.MIN_VALUE;
+        public static String calculateParty(HashMap<String, Double> probabilities) {
+                double maxProb = Double.MIN_VALUE;
+                double totalProbability = 0.0;
 
-                // Check if most likely party is past or equal to threshold to make guess on
-                if (partyProbabilities.get(mostLikelyParty) >= THRESHOLD) {
-                        System.out.println("It seems the party you align with is " + mostLikelyParty
-                                        + " with a probability of "
-                                        + (df.format(Math.round((partyProbabilities.get(mostLikelyParty) * 100))))
-                                        + "%");
-                        return mostLikelyParty;
+                // Calculated to for later use in bayes theorem
+                for (double likelihood : probabilities.values()) {
+                        totalProbability += likelihood;
                 }
 
-                // Will determine max counts from user answers
-                for (String party : counts.keySet()) {
-                        double votes = counts.get(party);
-                        if (votes > mostVotes) {
-                                mostVotes = votes;
+                // Will determine based on probability calculated from other methods
+                for (String party : probabilities.keySet()) {
+                        double priorProbability = 0.25;
+                        double likelihood = probabilities.get(party);
+
+                        // Utilize bayes theorem P(A|B) = (P(B|A) * P(A)) / P(B)
+                        // P(B|A) is prob of certain party and value is received from hashmap
+                        // P(A) is prior probability of political party will be .25, user only has 1/4 chance each time to select one of four political parties
+                        // P(B) is total prob adding up all the probs from hashmap
+                        // P(A|B) is posteriorProbability which is the likelihood that prob that A is
+                        // the party that will be when user selects answer related to party
+                        double posteriorProbability = (likelihood * priorProbability) / totalProbability;
+
+                        if (posteriorProbability > maxProb) {
+                                maxProb = posteriorProbability;
                                 mostLikelyParty = party;
                         }
                 }
