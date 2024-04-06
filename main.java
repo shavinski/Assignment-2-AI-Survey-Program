@@ -1,12 +1,19 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class main {
-        private static int republican = 0;
-        private static int democrat = 0;
-        private static int libertarian = 0;
-        private static int centrist = 0;
+        private static HashMap<String, Integer> userCounts = new HashMap<>();
+        private static ArrayList<String> userAnswers = new ArrayList<>();
 
         public static void main(String[] args) {
+                // Populate the hashmap
+                userCounts.put("republican", 0);
+                userCounts.put("democrat", 0);
+                userCounts.put("libertarian", 0);
+                userCounts.put("centrist", 0);
+
                 Scanner scanner = new Scanner(System.in);
 
                 String[][] questionAnswers = {
@@ -98,6 +105,7 @@ public class main {
                                         || userInputUpper.equals("D")) {
                                 System.out.println("");
                                 addPointsToPoliticalParty(userInputUpper);
+                                userAnswers.add(userInputUpper);
                                 currentQuestion += 1;
                         } else {
                                 System.out.println("Please enter a valid answer, either A, B, C or D.");
@@ -106,22 +114,39 @@ public class main {
 
                 }
 
-                System.out.println("done");
-                System.out.println("Republican " + republican);
-                System.out.println("Democrat " + democrat);
-                System.out.println("Libertarian " + libertarian);
-                System.out.println("Centrist " + centrist);
+                System.err.println(userAnswers);
+                String calculatedParty = calculateParty(userCounts);
+                writeToMatchingPoliticalFile(calculatedParty, userAnswers);
         }
 
         public static void addPointsToPoliticalParty(String input) {
                 if (input.equals("A")) {
-                        republican += 1;
+                        userCounts.put("republican", userCounts.get("republican") + 1);
                 } else if (input.equals("B")) {
-                        democrat += 1;
+                        userCounts.put("democrat", userCounts.get("democrat") + 1);
                 } else if (input.equals("C")) {
-                        libertarian += 1;
+                        userCounts.put("libertarian", userCounts.get("libertarian") + 1);
                 } else if (input.equals("D")) {
-                        centrist += 1;
+                        userCounts.put("centrist", userCounts.get("centrist") + 1);
                 }
+        }
+
+        public static String calculateParty(HashMap<String, Integer> counts) {
+                int mostVotes = Integer.MIN_VALUE;
+                String calculatedParty = null;
+
+                for (String party : counts.keySet()) {
+                        int votes = counts.get(party);
+                        if (votes > mostVotes) {
+                                mostVotes = votes;
+                                calculatedParty = party;
+                        }
+                }
+
+                return calculatedParty;
+        }
+
+        public static void writeToMatchingPoliticalFile(String party, ArrayList<String> answers) {
+
         }
 }
