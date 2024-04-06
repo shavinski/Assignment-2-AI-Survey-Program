@@ -1,4 +1,5 @@
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -7,15 +8,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class main {
-        private static HashMap<String, Integer> userCounts = new HashMap<>();
+        private static HashMap<String, Double> partyProbabilities = new HashMap<>();
         private static ArrayList<String> userAnswers = new ArrayList<>();
+        private static Double THRESHOLD = 0.70;
+        private static String mostLikelyParty = "republican";
+        private static DecimalFormat df = new DecimalFormat("#.##");
 
         public static void main(String[] args) {
-                // Populate the hashmap
-                userCounts.put("republican", 0);
-                userCounts.put("democrat", 0);
-                userCounts.put("libertarian", 0);
-                userCounts.put("centrist", 0);
+                // Populate the hashmap with probabilities, start with a quarter chance of all
+                // parties
+                partyProbabilities.put("republican", 0.25);
+                partyProbabilities.put("democrat", 0.25);
+                partyProbabilities.put("libertarian", 0.25);
+                partyProbabilities.put("centrist", 0.25);
 
                 // Initialize our scanner for user inputs
                 Scanner scanner = new Scanner(System.in);
@@ -108,10 +113,17 @@ public class main {
                                         || userInputUpper.equals("B")
                                         || userInputUpper.equals("C")
                                         || userInputUpper.equals("D")) {
+
                                 System.out.println("");
-                                addPointsToPoliticalParty(userInputUpper);
+                                changePartyProbability(userInputUpper);
+                                mostLikelyParty = calculateParty(partyProbabilities);
                                 userAnswers.add(userInputUpper);
                                 currentQuestion += 1;
+
+                                // Check if the most likely party probability has reached the threshold
+                                if (partyProbabilities.get(mostLikelyParty) >= THRESHOLD) {
+                                        break;
+                                }
                         } else {
                                 System.out.println("Please enter a valid answer, either A, B, C or D.");
                                 System.out.println("");
@@ -119,40 +131,49 @@ public class main {
 
                 }
 
-                // Will determine users party based on answers
-                String calculatedParty = calculateParty(userCounts);
-
+                System.out.println("It seems the party you align with is " + mostLikelyParty
+                                + " with a probability of "
+                                + (df.format(Math.round((partyProbabilities.get(mostLikelyParty) * 100))))
+                                + "%");
                 // Will write to correct political file based on calculated party
-                writeToMatchingPoliticalFile(calculatedParty, userAnswers);
+                writeToMatchingPoliticalFile(mostLikelyParty, userAnswers);
         }
 
-        public static void addPointsToPoliticalParty(String input) {
+        public static void changePartyProbability(String input) {
                 // Depending on input it will add one to value depending on key
                 if (input.equals("A")) {
-                        userCounts.put("republican", userCounts.get("republican") + 1);
+                        partyProbabilities.put("republican", partyProbabilities.get("republican") + .0685);
                 } else if (input.equals("B")) {
-                        userCounts.put("democrat", userCounts.get("democrat") + 1);
+                        partyProbabilities.put("democrat", partyProbabilities.get("democrat") + .0685);
                 } else if (input.equals("C")) {
-                        userCounts.put("libertarian", userCounts.get("libertarian") + 1);
+                        partyProbabilities.put("libertarian", partyProbabilities.get("libertarian") + .0685);
                 } else if (input.equals("D")) {
-                        userCounts.put("centrist", userCounts.get("centrist") + 1);
+                        partyProbabilities.put("centrist", partyProbabilities.get("centrist") + .0685);
                 }
         }
 
-        public static String calculateParty(HashMap<String, Integer> counts) {
-                int mostVotes = Integer.MIN_VALUE;
-                String calculatedParty = null;
+        public static String calculateParty(HashMap<String, Double> counts) {
+                double mostVotes = Double.MIN_VALUE;
+
+                // Check if most likely party is past or equal to threshold to make guess on
+                if (partyProbabilities.get(mostLikelyParty) >= THRESHOLD) {
+                        System.out.println("It seems the party you align with is " + mostLikelyParty
+                                        + " with a probability of "
+                                        + (df.format(Math.round((partyProbabilities.get(mostLikelyParty) * 100))))
+                                        + "%");
+                        return mostLikelyParty;
+                }
 
                 // Will determine max counts from user answers
                 for (String party : counts.keySet()) {
-                        int votes = counts.get(party);
+                        double votes = counts.get(party);
                         if (votes > mostVotes) {
                                 mostVotes = votes;
-                                calculatedParty = party;
+                                mostLikelyParty = party;
                         }
                 }
 
-                return calculatedParty;
+                return mostLikelyParty;
         }
 
         public static void writeToMatchingPoliticalFile(String party, ArrayList<String> answers) {
@@ -208,7 +229,7 @@ public class main {
                                 for (int i = 0; i < answers.size(); i++) {
                                         writer.write(answers.get(i));
                                 }
-                                
+
                                 writer.write("\n");
                                 writer.close();
 
