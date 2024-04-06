@@ -1,3 +1,6 @@
 Party: democrat
 B, B, B, B, B, B, B, B, B, B, B
 ------------------
+Party: democrat
+A, B, C, D, A, B, C, D, A, B, C
+------------------

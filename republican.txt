@@ -7,3 +7,6 @@ A, A, A, A, A, A, A, A, A, A, A,
 Party: republican
 A, A, A, A, A, A, A, A, A, A, A
 ------------------
+Party: republican
+A, A, D, D, A, A, D, A, A, C, A
+------------------

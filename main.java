@@ -17,8 +17,10 @@ public class main {
                 userCounts.put("libertarian", 0);
                 userCounts.put("centrist", 0);
 
+                // Initialize our scanner for user inputs
                 Scanner scanner = new Scanner(System.in);
 
+                // Initiate questions with answers
                 String[][] questionAnswers = {
 
                                 { "1. What is your stance on gun-control?",
@@ -90,7 +92,7 @@ public class main {
 
                 int currentQuestion = 0;
 
-                // Prints out question with multiple choice answers
+                // Prints out question with multiple choice answers that belong to that question 
                 while (currentQuestion <= questionAnswers.length - 1) {
                         System.out.println("----------------------------------");
                         System.out.println(questionAnswers[currentQuestion][0]);
@@ -117,12 +119,15 @@ public class main {
 
                 }
 
-                System.err.println(userAnswers);
+                // Will determine users party based on answers
                 String calculatedParty = calculateParty(userCounts);
+
+                // Will write to correct political file based on calculated party
                 writeToMatchingPoliticalFile(calculatedParty, userAnswers);
         }
 
         public static void addPointsToPoliticalParty(String input) {
+                // Depending on input it will add one to value depending on key
                 if (input.equals("A")) {
                         userCounts.put("republican", userCounts.get("republican") + 1);
                 } else if (input.equals("B")) {
@@ -138,6 +143,7 @@ public class main {
                 int mostVotes = Integer.MIN_VALUE;
                 String calculatedParty = null;
 
+                // Will determine max counts from user answers 
                 for (String party : counts.keySet()) {
                         int votes = counts.get(party);
                         if (votes > mostVotes) {
@@ -150,6 +156,7 @@ public class main {
         }
 
         public static void writeToMatchingPoliticalFile(String party, ArrayList<String> answers) {
+                // Based off party will create a file if it doesn't exist yet and write to it 
                 if (party.equals("republican")) {
                         File republicanFile = new File("republican.txt");
 
