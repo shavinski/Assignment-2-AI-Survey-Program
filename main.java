@@ -92,7 +92,7 @@ public class main {
 
                 int currentQuestion = 0;
 
-                // Prints out question with multiple choice answers that belong to that question 
+                // Prints out question with multiple choice answers that belong to that question
                 while (currentQuestion <= questionAnswers.length - 1) {
                         System.out.println("----------------------------------");
                         System.out.println(questionAnswers[currentQuestion][0]);
@@ -143,7 +143,7 @@ public class main {
                 int mostVotes = Integer.MIN_VALUE;
                 String calculatedParty = null;
 
-                // Will determine max counts from user answers 
+                // Will determine max counts from user answers
                 for (String party : counts.keySet()) {
                         int votes = counts.get(party);
                         if (votes > mostVotes) {
@@ -156,7 +156,7 @@ public class main {
         }
 
         public static void writeToMatchingPoliticalFile(String party, ArrayList<String> answers) {
-                // Based off party will create a file if it doesn't exist yet and write to it 
+                // Based off party will create a file if it doesn't exist yet and write to it
                 if (party.equals("republican")) {
                         File republicanFile = new File("republican.txt");
 
@@ -164,19 +164,12 @@ public class main {
                                 republicanFile.createNewFile();
                                 FileWriter writer = new FileWriter(republicanFile, true);
 
-                                // Write party name
-                                writer.write("Party: " + party + "\n");
-
                                 // Write user answers
                                 for (int i = 0; i < answers.size(); i++) {
-                                        if (i == answers.size() - 1) {
-                                                writer.write(answers.get(i));
-                                        } else {
-                                                writer.write(answers.get(i) + ", ");
-                                        }
+                                        writer.write(answers.get(i));
                                 }
 
-                                writer.write("\n" + "------------------" + "\n");
+                                writer.write("\n");
                                 writer.close();
 
                         } catch (IOException e) {
@@ -191,19 +184,12 @@ public class main {
                                 democratFile.createNewFile();
                                 FileWriter writer = new FileWriter(democratFile, true);
 
-                                // Write party name
-                                writer.write("Party: " + party + "\n");
-
                                 // Write user answers
                                 for (int i = 0; i < answers.size(); i++) {
-                                        if (i == answers.size() - 1) {
-                                                writer.write(answers.get(i));
-                                        } else {
-                                                writer.write(answers.get(i) + ", ");
-                                        }
+                                        writer.write(answers.get(i));
                                 }
 
-                                writer.write("\n" + "------------------" + "\n");
+                                writer.write("\n");
                                 writer.close();
 
                         } catch (IOException e) {
@@ -218,19 +204,12 @@ public class main {
                                 libertarianFile.createNewFile();
                                 FileWriter writer = new FileWriter(libertarianFile, true);
 
-                                // Write party name
-                                writer.write("Party: " + party + "\n");
-
                                 // Write user answers
                                 for (int i = 0; i < answers.size(); i++) {
-                                        if (i == answers.size() - 1) {
-                                                writer.write(answers.get(i));
-                                        } else {
-                                                writer.write(answers.get(i) + ", ");
-                                        }
+                                        writer.write(answers.get(i));
                                 }
-
-                                writer.write("\n" + "------------------" + "\n");
+                                
+                                writer.write("\n");
                                 writer.close();
 
                         } catch (IOException e) {
@@ -244,19 +223,12 @@ public class main {
                                 centristFile.createNewFile();
                                 FileWriter writer = new FileWriter(centristFile, true);
 
-                                // Write party name
-                                writer.write("Party: " + party + "\n");
-
                                 // Write user answers
                                 for (int i = 0; i < answers.size(); i++) {
-                                        if (i == answers.size() - 1) {
-                                                writer.write(answers.get(i));
-                                        } else {
-                                                writer.write(answers.get(i) + ", ");
-                                        }
+                                        writer.write(answers.get(i));
                                 }
 
-                                writer.write("\n" + "------------------" + "\n");
+                                writer.write("\n");
                                 writer.close();
 
                         } catch (IOException e) {

@@ -1,6 +1,1 @@
-Party: libertarian
-C, C, C, C, C, C, C, C, C, C, C
-------------------
-Party: libertarian
-C, C, C, C, D, A, A, A, C, B, D
-------------------
+CCCCCCCCCCC
