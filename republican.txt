@@ -1,0 +1,9 @@
+Party: republican
+A, A, A, A, A, A, A, A, A, A, A, 
+------------------
+Party: republican
+A, A, A, A, A, A, A, A, A, A, A, 
+------------------
+Party: republican
+A, A, A, A, A, A, A, A, A, A, A
+------------------

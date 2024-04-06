@@ -2,6 +2,9 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class main {
         private static HashMap<String, Integer> userCounts = new HashMap<>();
@@ -147,6 +150,112 @@ public class main {
         }
 
         public static void writeToMatchingPoliticalFile(String party, ArrayList<String> answers) {
+                if (party.equals("republican")) {
+                        File republicanFile = new File("republican.txt");
 
+                        try {
+                                republicanFile.createNewFile();
+                                FileWriter writer = new FileWriter(republicanFile, true);
+
+                                // Write party name
+                                writer.write("Party: " + party + "\n");
+
+                                // Write user answers
+                                for (int i = 0; i < answers.size(); i++) {
+                                        if (i == answers.size() - 1) {
+                                                writer.write(answers.get(i));
+                                        } else {
+                                                writer.write(answers.get(i) + ", ");
+                                        }
+                                }
+
+                                writer.write("\n" + "------------------" + "\n");
+                                writer.close();
+
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                                System.err.println("Failed to write to file correctly");
+                        }
+
+                } else if (party.equals("democrat")) {
+                        File democratFile = new File("democrat.txt");
+
+                        try {
+                                democratFile.createNewFile();
+                                FileWriter writer = new FileWriter(democratFile, true);
+
+                                // Write party name
+                                writer.write("Party: " + party + "\n");
+
+                                // Write user answers
+                                for (int i = 0; i < answers.size(); i++) {
+                                        if (i == answers.size() - 1) {
+                                                writer.write(answers.get(i));
+                                        } else {
+                                                writer.write(answers.get(i) + ", ");
+                                        }
+                                }
+
+                                writer.write("\n" + "------------------" + "\n");
+                                writer.close();
+
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                                System.err.println("Failed to write to file correctly");
+                        }
+
+                } else if (party.equals("libertarian")) {
+                        File libertarianFile = new File("libertarian.txt");
+
+                        try {
+                                libertarianFile.createNewFile();
+                                FileWriter writer = new FileWriter(libertarianFile, true);
+
+                                // Write party name
+                                writer.write("Party: " + party + "\n");
+
+                                // Write user answers
+                                for (int i = 0; i < answers.size(); i++) {
+                                        if (i == answers.size() - 1) {
+                                                writer.write(answers.get(i));
+                                        } else {
+                                                writer.write(answers.get(i) + ", ");
+                                        }
+                                }
+
+                                writer.write("\n" + "------------------" + "\n");
+                                writer.close();
+
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                                System.err.println("Failed to write to file correctly");
+                        }
+                } else if (party.equals("centrist")) {
+                        File centristFile = new File("centrist.txt");
+
+                        try {
+                                centristFile.createNewFile();
+                                FileWriter writer = new FileWriter(centristFile, true);
+
+                                // Write party name
+                                writer.write("Party: " + party + "\n");
+
+                                // Write user answers
+                                for (int i = 0; i < answers.size(); i++) {
+                                        if (i == answers.size() - 1) {
+                                                writer.write(answers.get(i));
+                                        } else {
+                                                writer.write(answers.get(i) + ", ");
+                                        }
+                                }
+
+                                writer.write("\n" + "------------------" + "\n");
+                                writer.close();
+
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                                System.err.println("Failed to write to file correctly");
+                        }
+                }
         }
 }
